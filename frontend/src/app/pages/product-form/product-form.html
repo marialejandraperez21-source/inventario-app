@@ -1,0 +1,58 @@
+<h1 class="h3 mb-3">{{ isEdit ? 'Editar producto' : 'Nuevo producto' }}</h1>
+
+@if (errorMessage()) {
+  <div class="alert alert-danger">{{ errorMessage() }}</div>
+}
+
+@if (loading()) {
+  <p class="text-muted">Cargando producto...</p>
+} @else {
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card card-body">
+    <div class="mb-3">
+      <label for="name" class="form-label">Nombre</label>
+      <input id="name" type="text" class="form-control" formControlName="name" [class.is-invalid]="invalid('name')" />
+      @if (form.controls.name.hasError('required')) {
+        <div class="invalid-feedback">El nombre es obligatorio.</div>
+      } @else if (form.controls.name.hasError('maxlength')) {
+        <div class="invalid-feedback">El nombre no puede superar los 150 caracteres.</div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <textarea id="description" rows="3" class="form-control" formControlName="description" [class.is-invalid]="invalid('description')"></textarea>
+      <div class="invalid-feedback">La descripción no puede superar los 1000 caracteres.</div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Precio</label>
+      <input id="price" type="number" min="0" class="form-control" formControlName="price" [class.is-invalid]="invalid('price')" />
+      @if (form.controls.price.hasError('required')) {
+        <div class="invalid-feedback">El precio es obligatorio.</div>
+      } @else if (form.controls.price.hasError('min')) {
+        <div class="invalid-feedback">El precio no puede ser negativo.</div>
+      }
+    </div>
+
+    @if (!isEdit) {
+      <div class="mb-3">
+        <label for="stock" class="form-label">Stock inicial</label>
+        <input id="stock" type="number" min="0" step="1" class="form-control" formControlName="stock" [class.is-invalid]="invalid('stock')" />
+        @if (form.controls.stock.hasError('required')) {
+          <div class="invalid-feedback">El stock inicial es obligatorio.</div>
+        } @else {
+          <div class="invalid-feedback">El stock debe ser un número entero, no negativo.</div>
+        }
+      </div>
+    } @else {
+      <p class="text-muted small">El stock se modifica solo mediante movimientos de inventario.</p>
+    }
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Guardando...' : 'Guardar' }}
+      </button>
+      <a routerLink="/products" class="btn btn-outline-secondary">Cancelar</a>
+    </div>
+  </form>
+}
