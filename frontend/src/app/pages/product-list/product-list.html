@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Productos</h1>
+</div>
+
+@if (errorMessage()) {
+  <div class="alert alert-danger">{{ errorMessage() }}</div>
+}
+
+@if (loading()) {
+  <p class="text-muted">Cargando productos...</p>
+} @else if (products().length > 0) {
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Stock</th>
+        <th class="text-end">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of products(); track product.id) {
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
+          <td>{{ product.stock }}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product)">Eliminar</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else if (!errorMessage()) {
+  <p class="text-muted">No hay productos registrados.</p>
+}
