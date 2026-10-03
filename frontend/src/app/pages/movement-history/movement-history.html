@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Historial de movimientos</h1>
+  <a routerLink="/movements/new" class="btn btn-primary">Registrar movimiento</a>
+</div>
+
+@if (errorMessage()) {
+  <div class="alert alert-danger">{{ errorMessage() }}</div>
+}
+
+@if (loading()) {
+  <p class="text-muted">Cargando movimientos...</p>
+} @else if (movements().length > 0) {
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Producto</th>
+        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (movement of movements(); track movement.id) {
+        <tr>
+          <td>{{ movement.created_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ movement.product?.name }}</td>
+          <td>
+            @if (movement.type === 'IN') {
+              <span class="badge text-bg-success">Entrada</span>
+            } @else {
+              <span class="badge text-bg-danger">Salida</span>
+            }
+          </td>
+          <td>{{ movement.quantity }}</td>
+          <td>{{ movement.description }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else if (!errorMessage()) {
+  <p class="text-muted">Aún no hay movimientos registrados.</p>
+}
