@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Validaciones para registrar un movimiento (entrada o salida)
 class StoreInventoryMovementRequest extends FormRequest
 {
     public function authorize(): bool
@@ -14,9 +15,13 @@ class StoreInventoryMovementRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // obligatorio, entero, y debe existir en la tabla products
             'product_id' => ['required', 'integer', 'exists:products,id'],
+            // solo se acepta IN (entrada) u OUT (salida)
             'type' => ['required', 'in:IN,OUT'],
+            // entero de al menos 1
             'quantity' => ['required', 'integer', 'min:1'],
+            // motivo opcional
             'description' => ['nullable', 'string', 'max:255'],
         ];
     }

@@ -1,12 +1,15 @@
+<!-- Encabezado con el botón para crear un producto -->
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h1 class="h3 mb-0">Productos</h1>
   <a routerLink="/products/new" class="btn btn-primary">Nuevo producto</a>
 </div>
-  
+
+<!-- Mensaje de error: solo aparece si errorMessage tiene texto -->
 @if (errorMessage()) {
   <div class="alert alert-danger">{{ errorMessage() }}</div>
 }
 
+<!-- Según el estado se muestra una cosa: cargando, la tabla o el aviso de que no hay productos -->
 @if (loading()) {
   <p class="text-muted">Cargando productos...</p>
 } @else if (products().length > 0) {
@@ -20,12 +23,15 @@
       </tr>
     </thead>
     <tbody>
+      <!-- @for repite la fila por cada producto; track product.id ayuda a Angular a identificar cada fila -->
       @for (product of products(); track product.id) {
         <tr>
           <td>{{ product.name }}</td>
+          <!-- El pipe currency muestra el precio con formato de pesos -->
           <td>{{ product.price | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</td>
           <td>{{ product.stock }}</td>
           <td class="text-end">
+            <!-- Editar lleva a /products/{id}/edit -->
             <a class="btn btn-sm btn-outline-primary me-2" [routerLink]="['/products', product.id, 'edit']">Editar</a>
             <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product)">Eliminar</button>
           </td>

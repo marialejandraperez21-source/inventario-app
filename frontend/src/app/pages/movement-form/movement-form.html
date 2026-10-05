@@ -1,5 +1,6 @@
 <h1 class="h3 mb-3">Registrar movimiento</h1>
 
+<!-- Aquí aparece el error de la API, por ejemplo "Stock insuficiente" -->
 @if (errorMessage()) {
   <div class="alert alert-danger">{{ errorMessage() }}</div>
 }
@@ -9,11 +10,13 @@
     <label for="product" class="form-label">Producto</label>
     <select id="product" class="form-select" formControlName="product_id" [class.is-invalid]="invalid('product_id')">
       <option [ngValue]="null">Selecciona un producto</option>
+      <!-- Una opción por cada producto -->
       @for (product of products(); track product.id) {
         <option [ngValue]="product.id">{{ product.name }}</option>
       }
     </select>
     <div class="invalid-feedback">Debes seleccionar un producto.</div>
+    <!-- Muestro el stock actual del producto elegido -->
     @if (selectedProduct(); as selected) {
       <div class="form-text">Stock actual: {{ selected.stock }}</div>
     }

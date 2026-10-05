@@ -1,3 +1,4 @@
+<!-- El título cambia según el modo -->
 <h1 class="h3 mb-3">{{ isEdit ? 'Editar producto' : 'Nuevo producto' }}</h1>
 
 @if (errorMessage()) {
@@ -7,9 +8,13 @@
 @if (loading()) {
   <p class="text-muted">Cargando producto...</p>
 } @else {
+  <!-- [formGroup] conecta esta plantilla con el formulario definido en el .ts;
+       (ngSubmit) ejecuta submit() al pulsar Guardar; novalidate desactiva las validaciones del navegador
+       porque uso las de Angular -->
   <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="card card-body">
     <div class="mb-3">
       <label for="name" class="form-label">Nombre</label>
+      <!-- formControlName conecta el campo con su control; is-invalid pone el borde rojo si hay error -->
       <input id="name" type="text" class="form-control" formControlName="name" [class.is-invalid]="invalid('name')" />
       @if (form.controls.name.hasError('required')) {
         <div class="invalid-feedback">El nombre es obligatorio.</div>
@@ -34,6 +39,7 @@
       }
     </div>
 
+    <!-- El stock inicial solo se pide al crear. Al editar, el stock cambia únicamente con movimientos. -->
     @if (!isEdit) {
       <div class="mb-3">
         <label for="stock" class="form-label">Stock inicial</label>
@@ -49,6 +55,7 @@
     }
 
     <div class="d-flex gap-2">
+      <!-- El botón se desactiva mientras se guarda, para evitar enviar dos veces -->
       <button type="submit" class="btn btn-primary" [disabled]="saving()">
         {{ saving() ? 'Guardando...' : 'Guardar' }}
       </button>

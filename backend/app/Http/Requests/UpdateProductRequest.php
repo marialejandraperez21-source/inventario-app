@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Validaciones para EDITAR un producto.
+// Es igual a la de crear, pero SIN el campo "stock" a propósito:
+// el controlador usa validated(), que solo devuelve los campos que tienen regla,
+// así que aunque alguien envíe "stock" al editar, nunca llega a guardarse.
+// El stock solo cambia con movimientos de inventario.
 class UpdateProductRequest extends FormRequest
 {
     public function authorize(): bool

@@ -23,9 +23,12 @@
     <tbody>
       @for (movement of movements(); track movement.id) {
         <tr>
+          <!-- La API envía la fecha en hora UTC; el pipe date la muestra en la hora de mi navegador -->
           <td>{{ movement.created_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <!-- El ? evita error si el producto no viene en la respuesta -->
           <td>{{ movement.product?.name }}</td>
           <td>
+            <!-- Etiqueta verde para entradas y roja para salidas -->
             @if (movement.type === 'IN') {
               <span class="badge text-bg-success">Entrada</span>
             } @else {

@@ -1,7 +1,9 @@
+<!-- Barra de navegación que se ve en todas las pantallas -->
 <nav class="navbar navbar-expand navbar-dark bg-dark">
   <div class="container">
     <span class="navbar-brand">Inventario</span>
     <div class="navbar-nav">
+      <!-- routerLink navega sin recargar la página; routerLinkActive pone la clase "active" en la página actual -->
       <a class="nav-link" routerLink="/products" routerLinkActive="active">Productos</a>
       <a class="nav-link" routerLink="/movements" routerLinkActive="active">Movimientos</a>
     </div>
@@ -9,5 +11,6 @@
 </nav>
 
 <main class="container py-4">
+  <!-- Aquí Angular dibuja la pantalla que corresponde a la dirección (ver app.routes.ts) -->
   <router-outlet />
 </main>

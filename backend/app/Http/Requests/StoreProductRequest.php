@@ -4,23 +4,29 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+// Validaciones para CREAR un producto.
+// Si algo no cumple, Laravel responde 422 con los errores, sin llegar al controlador.
 class StoreProductRequest extends FormRequest
 {
+    // true = se permite la petición. No hay login en este proyecto.
+    // (Si se deja en false, todas las peticiones dan error 403.)
     public function authorize(): bool
     {
         return true;
     }
 
+    // Reglas de cada campo
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:150'],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'stock' => ['required', 'integer', 'min:0'],
+            'name' => ['required', 'string', 'max:150'],          // obligatorio, texto, máximo 150 caracteres
+            'description' => ['nullable', 'string', 'max:1000'],  // opcional
+            'price' => ['required', 'numeric', 'min:0'],          // obligatorio, número, no negativo
+            'stock' => ['required', 'integer', 'min:0'],          // stock inicial: entero, no negativo
         ];
     }
 
+    // Mensajes en español para cuando una regla falla
     public function messages(): array
     {
         return [
